@@ -57,6 +57,7 @@
 		<FormField fieldTitle={"Unverified"} fieldName={"unverified"} bind:fieldValue={gkTheme.themeValues.root.unverified} />
 		<FormField fieldTitle={"Link Color"} fieldName={"linkcolor"} bind:fieldValue={gkTheme.themeValues.root.linkColor} />
 		<FormField fieldTitle={"Card Shadow"} fieldName={"cardshadow"} bind:fieldValue={gkTheme.themeValues.root.cardShadow} />
+		<FormField fieldTitle={"Modified Line"} fieldName={"modifiedline"} bind:fieldValue={gkTheme.themeValues.root.modifiedLine} />
 		<FormField fieldTitle={"Terminal Repo Name"} fieldName={"termreponame"} bind:fieldValue={gkTheme.themeValues.root.termRepoName} />
 		<FormField fieldTitle={"Terminal Repo Branch"} fieldName={"termrepobranch"} bind:fieldValue={gkTheme.themeValues.root.termRepoBranch} />
 		<FormField fieldTitle={"Terminal Repo Tag"} fieldName={"termrepotag"} bind:fieldValue={gkTheme.themeValues.root.termRepoTag} />

@@ -16,7 +16,6 @@
 		
 		const theme = getThemeFile(themeJson, gkTheme.meta.name);
 		newGitKrakenTheme = theme;
-		console.log(theme)
 	}
 
 </script>
@@ -86,7 +85,7 @@
 	<button type="submit" on:click|preventDefault={createTheme} class="block w-full bg-indigo-600 mt-4 py-2 rounded-2xl text-white font-semibold mb-2">Create Theme</button>
 
 	{#if newGitKrakenTheme !== ""}
-		<a type="button" download href="{newGitKrakenTheme}"
+		<a type="button" download="{gkTheme.meta.name}" href="{newGitKrakenTheme}"
 			class="p-2 pl-5 pr-5 bg-blue-500 text-gray-100 text-lg rounded-lg focus:border-4 border-blue-300">Download Theme</a>
 	{/if}
 </form>

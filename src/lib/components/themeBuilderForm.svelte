@@ -1,14 +1,23 @@
 <script>
-	import { gkTheme } from '$lib/theme';
+	import { gkTheme } from '$lib/theme'
+	import { formatThemeFile } from '$lib/utils'
 	import FormField from '$lib/components/formField.svelte'
+
 	let isChecked = false;
+	let newGitKrakenTheme = "";
 	
 	function toggleTheme(){
 		isChecked = !isChecked;
 		gkTheme.meta.scheme = isChecked ? "dark" : 'light';
 	}
 
-	$:console.dir(gkTheme.themeValues.root)
+	function createTheme(){
+		console.log(gkTheme);		
+		var test = formatThemeFile(gkTheme);
+		console.log(test)
+	}
+
+	// $:console.dir(gkTheme.themeValues.root)
 </script>
 
 <form class="bg-white w-full lg:w-11/12">
@@ -45,7 +54,9 @@
 		<FormField fieldTitle={"Text Color"} fieldName={"textcolor"} bind:fieldValue={gkTheme.themeValues.root.textColor} />
 		<FormField fieldTitle={"Text Accent"} fieldName={"textaccent"} bind:fieldValue={gkTheme.themeValues.root.textAccent} />
 		<FormField fieldTitle={"Text Inverse"} fieldName={"textinverse"} bind:fieldValue={gkTheme.themeValues.root.textInverse} />
+		<FormField fieldTitle={"Unverified"} fieldName={"unverified"} bind:fieldValue={gkTheme.themeValues.root.unverified} />
 		<FormField fieldTitle={"Link Color"} fieldName={"linkcolor"} bind:fieldValue={gkTheme.themeValues.root.linkColor} />
+		<FormField fieldTitle={"Card Shadow"} fieldName={"cardshadow"} bind:fieldValue={gkTheme.themeValues.root.cardShadow} />
 		<FormField fieldTitle={"Terminal Repo Name"} fieldName={"termreponame"} bind:fieldValue={gkTheme.themeValues.root.termRepoName} />
 		<FormField fieldTitle={"Terminal Repo Branch"} fieldName={"termrepobranch"} bind:fieldValue={gkTheme.themeValues.root.termRepoBranch} />
 		<FormField fieldTitle={"Terminal Repo Tag"} fieldName={"termrepotag"} bind:fieldValue={gkTheme.themeValues.root.termRepoTag} />
@@ -57,17 +68,23 @@
 		<FormField fieldTitle={"Text Normal"} fieldName={"toolbartxtnoraml"} bind:fieldValue={gkTheme.themeValues.toolbar.textNormal} />
 		<FormField fieldTitle={"Text Secondary"} fieldName={"toolbartxtsecondary"} bind:fieldValue={gkTheme.themeValues.toolbar.textSecondary} />
 		<FormField fieldTitle={"Text Disabled"} fieldName={"toolbartxtdisabled"} bind:fieldValue={gkTheme.themeValues.toolbar.textDisabled} />
+		<FormField fieldTitle={"Section Border"} fieldName={"sectionborder"} bind:fieldValue={gkTheme.themeValues.toolbar.sectionBorder} />
 		<FormField fieldTitle={"Input Bg"} fieldName={"toolbarinputbg"} bind:fieldValue={gkTheme.themeValues.toolbar.input__bg} />
 		<FormField fieldTitle={"Link Color"} fieldName={"toolbarlinkcolor"} bind:fieldValue={gkTheme.themeValues.toolbar.linkColor} />
 	</div>
 	<h2 class="text-gray-800 font-semibold block my-3 text-md border-b-2">Tabs bar</h2>
 	<div class="flex gap-x-2 flex-wrap justify-start">
 		<FormField fieldTitle={"Text Selected"} fieldName={"tabsbartxtselected"} bind:fieldValue={gkTheme.themeValues.tabsbar.textSelected} />
-		<FormField fieldTitle={"Text Normal"} fieldName={"tabsbartxtnoraml"} bind:fieldValue={gkTheme.themeValues.tabsbar.textSelected} />
-		<FormField fieldTitle={"Text Secondary"} fieldName={"tabsbartxtsecondary"} bind:fieldValue={gkTheme.themeValues.tabsbar.textSelected} />
-		<FormField fieldTitle={"Text Disabled"} fieldName={"tabsbartxtdisabled"} bind:fieldValue={gkTheme.themeValues.tabsbar.textSelected} />
-		<FormField fieldTitle={"Input Bg"} fieldName={"tabsbarinputbg"} bind:fieldValue={gkTheme.themeValues.tabsbar.textSelected} />
-		<FormField fieldTitle={"Link Color"} fieldName={"tabsbarlinkcolor"} bind:fieldValue={gkTheme.themeValues.tabsbar.textSelected} />
+		<FormField fieldTitle={"Text Normal"} fieldName={"tabsbartxtnoraml"} bind:fieldValue={gkTheme.themeValues.tabsbar.textNormal} />
+		<FormField fieldTitle={"Text Secondary"} fieldName={"tabsbartxtsecondary"} bind:fieldValue={gkTheme.themeValues.tabsbar.textSecondary} />
+		<FormField fieldTitle={"Text Disabled"} fieldName={"tabsbartxtdisabled"} bind:fieldValue={gkTheme.themeValues.tabsbar.textDisabled} />
+		<FormField fieldTitle={"Section Border"} fieldName={"sectionborder"} bind:fieldValue={gkTheme.themeValues.tabsbar.sectionBorder} />
+		<FormField fieldTitle={"Input Bg"} fieldName={"tabsbarinputbg"} bind:fieldValue={gkTheme.themeValues.tabsbar.input__bg} />
+		<FormField fieldTitle={"Link Color"} fieldName={"tabsbarlinkcolor"} bind:fieldValue={gkTheme.themeValues.tabsbar.linkColor} />
 	</div>
-	<button type="submit" class="block w-full bg-indigo-600 mt-4 py-2 rounded-2xl text-white font-semibold mb-2">Create Theme</button>
+	<button type="submit" on:click|preventDefault={createTheme} class="block w-full bg-indigo-600 mt-4 py-2 rounded-2xl text-white font-semibold mb-2">Create Theme</button>
+
+	{#if newGitKrakenTheme !== ""}
+		<a download="" href="">Download Theme</a>
+	{/if}
 </form>

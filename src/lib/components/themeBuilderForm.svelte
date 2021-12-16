@@ -1,6 +1,6 @@
 <script>
 	import { gkTheme } from '$lib/theme'
-	import { formatThemeFile } from '$lib/utils'
+	import { formatThemeFile, getThemeFile } from '$lib/utils'
 	import FormField from '$lib/components/formField.svelte'
 
 	let isChecked = false;
@@ -12,12 +12,13 @@
 	}
 
 	function createTheme(){
-		console.log(gkTheme);		
-		var test = formatThemeFile(gkTheme);
-		console.log(test)
+		var themeJson = formatThemeFile(gkTheme);
+		
+		const theme = getThemeFile(themeJson, gkTheme.meta.name);
+		newGitKrakenTheme = theme;
+		console.log(theme)
 	}
 
-	// $:console.dir(gkTheme.themeValues.root)
 </script>
 
 <form class="bg-white w-full lg:w-11/12">
@@ -85,6 +86,7 @@
 	<button type="submit" on:click|preventDefault={createTheme} class="block w-full bg-indigo-600 mt-4 py-2 rounded-2xl text-white font-semibold mb-2">Create Theme</button>
 
 	{#if newGitKrakenTheme !== ""}
-		<a download="" href="">Download Theme</a>
+		<a type="button" download href="{newGitKrakenTheme}"
+			class="p-2 pl-5 pr-5 bg-blue-500 text-gray-100 text-lg rounded-lg focus:border-4 border-blue-300">Download Theme</a>
 	{/if}
 </form>

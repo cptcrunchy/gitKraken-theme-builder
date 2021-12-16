@@ -1,9 +1,8 @@
 <script>
 	export let fieldTitle;
 	export let fieldName;
-	let fieldValue;
-	let colorValue;
-
+	export let fieldValue;
+	
 	function handleColorChange(color){
 		fieldValue = color;
 	}
@@ -12,7 +11,7 @@
 <div class="flex flex-col gap-x-2 items-start">
 	<label class="text-gray-800 font-semibold block my-3 text-sm" for="rootOrange">{fieldTitle}</label>
 	<div class="flex">
-		<input type="color" class="w-14 h-8 p-0 focus:outline-none" bind:value={colorValue} on:change={handleColorChange(colorValue)}  />
+		<input type="color" class="w-14 h-8 p-0 focus:outline-none" bind:value={fieldValue} on:change={handleColorChange(fieldValue)}  />
 		<input type="text" class="w-20 border px-2 focus:outline-none" name={fieldName} id={fieldName} bind:value={fieldValue}>
 	</div>
 </div>

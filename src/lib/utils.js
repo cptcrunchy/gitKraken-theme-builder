@@ -122,7 +122,8 @@ export function formatThemeFile(theme){
 	return JSON.parse(JSON.stringify(gkTheme));
 }
 
-export function getThemeFile(themeJson){
-
+export function getThemeFile(themeJson, fileName){
+	const file = new File([themeJson], fileName ,{type: 'application/json'})
+	return URL.createObjectURL(file);
 }
 

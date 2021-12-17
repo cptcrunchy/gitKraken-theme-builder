@@ -1,3 +1,4 @@
+const isNullOrEmpty = value => value == null || value == "";
 
 const convertToRgba = (hex, alpha = 1) => {
     const r = parseInt(hex.slice(1, 3), 16);
@@ -7,26 +8,58 @@ const convertToRgba = (hex, alpha = 1) => {
     return `rgba(${r}, ${g}, ${b}, ${alpha})`;
 }
 
+function sanitizeRootValues(root){
+  let rootValues = "";   
+  if(!isNullOrEmpty(root.red)) rootValues.concat(`"red": "${root.orange}",\r`)
+  if(!isNullOrEmpty(root.orange)) rootValues.concat(`"orange": "${root.orange}",\r`) 
+  if(!isNullOrEmpty(root.yellow)) rootValues.concat(`"yellow": "${root.yellow}",\r`) 
+  if(!isNullOrEmpty(root.green)) rootValues.concat(`"green": "${root.green}",\r`) 
+  if(!isNullOrEmpty(root.blue)) rootValues.concat(`"blue": "${root.blue}",\r`) 
+  if(!isNullOrEmpty(root.ltblue)) rootValues.concat(`"ltblue": "${root.ltblue}",\r`) 
+  if(!isNullOrEmpty(root.app__bg0)) rootValues.concat(`"app__bg0": "${root.app__bg0}",\r`) 
+  if(!isNullOrEmpty(root.sectionBorder)) rootValues.concat(`"section-border": "fade(${root.sectionBorder}, 8%)",\r`) 
+  if(!isNullOrEmpty(root.subtleBorder)) rootValues.concat(`"subtle-border": "fade(${root.subtleBorder}, 4%)",\r`) 
+  if(!isNullOrEmpty(root.modalOverlay)) rootValues.concat(`"modal-overlay-color": "${convertToRgba(root.modalOverlay, 0.5)}",\r`) 
+  if(!isNullOrEmpty(root.textColor)) rootValues.concat(`".text-color": "${root.textColor}",\r`) 
+  if(!isNullOrEmpty(root.textAccent)) rootValues.concat(`"text-accent": "${root.textAccent}",\r`) 
+  if(!isNullOrEmpty(root.textInverse)) rootValues.concat(`"text-inverse": "${root.textInverse}",\r`)
+  if(!isNullOrEmpty(root.linkColor)) rootValues.concat(`"link-color": "${root.linkColor}",\r`) 
+  if(!isNullOrEmpty(root.cardShadow)) rootValues.concat(`"card-shadow": "${convertToRgba(root.cardShadow, 0.2)}",\r`) 
+  if(!isNullOrEmpty(root.modifiedLine)) rootValues.concat(`"modified-line": "fade(${root.modifiedLine}, 25%)",\r`) 
+  if(!isNullOrEmpty(root.unverified)) rootValues.concat(`"unverified": "fade(${root.unverified}, 10%)",\r`) 
+  if(!isNullOrEmpty(root.termRepoName)) rootValues.concat(`"terminal__repo-name-color": "${root.termRepoName}",\r`) 
+  if(!isNullOrEmpty(root.termRepoBranch)) rootValues.concat(`"terminal__repo-branch-color": "${root.termRepoBranch}",\r`) 
+  if(!isNullOrEmpty(root.termRepoTag)) rootValues.concat(`"terminal__repo-tag-color": "${root.termRepoTag}",\r`) 
+  if(!isNullOrEmpty(root.termRepoUpstream)) rootValues.concat(`"terminal__repo-upstream-color": "${root.termRepoUpstream}",\r`); 
+  return rootValues;  
+}
+
+function sanitizeValues(valuesObj){
+  let values = "";
+   if(!isNullOrEmpty(valuesObj.textSelected)) values.concat(`"text-selected": "${convertToRgba(valuesObj.textSelected, 1)}",\r`); 
+   if(!isNullOrEmpty(valuesObj.textNormal)) values.concat(`"text-normal": "${convertToRgba(valuesObj.textNormal, 0.9)}",\r`); 
+   if(!isNullOrEmpty(valuesObj.textSecondary)) values.concat(`"text-secondary": "${convertToRgba(valuesObj.textSecondary, 0.6)}",\r`); 
+   if(!isNullOrEmpty(valuesObj.textDisabled)) values.concat(`"text-disabled": "${convertToRgba(valuesObj.textDisabled, 0.4)}",\r`); 
+   if(!isNullOrEmpty(valuesObj.sectionBorder)) values.concat(`"section-border": "${convertToRgba(valuesObj.sectionBorder, 0.2)}",\r`); 
+   if(!isNullOrEmpty(valuesObj.input__bg)) values.concat(`"input__bg": "${convertToRgba(valuesObj.input__bg, 0.2)}",\r`); 
+   if(!isNullOrEmpty(valuesObj.linkColor)) values.concat(`"link-color": "${convertToRgba(valuesObj.linkColor)}",\r`); 
+  return values;
+}
+
+
 export function formatThemeFile(theme){
     const {meta, themeValues} = theme
     const {toolbar, tabsbar} = themeValues
         
-    const gkTheme = 
-`
+    const gkTheme = `
 {
   "meta": {
-    "name": "${meta.name}",
+    "name": "${isNullOrEmpty(meta.name) ? "custom-theme" : meta.name}",
     "scheme": "${meta.scheme}"
   },
   "themeValues": {
     "root": {
-      "red": "${themeValues.root.red}",
-      "orange": "${themeValues.root.orange}",
-      "yellow": "${themeValues.root.yellow}",
-      "green": "${themeValues.root.green}",
-      "blue": "${themeValues.root.blue}",
-      "ltblue": "${themeValues.root.ltblue}",
-      "app__bg0": "${themeValues.root.app__bg0}",
+      ${sanitizeRootValues(themeValues.root)}
       "toolbar__bg0": "lighten(saturate(@app__bg0, 3%), 6%)",
       "toolbar__bg1": "lighten(@toolbar__bg0, 4%)",
       "toolbar__bg2": "lighten(@toolbar__bg1, 6%)",
@@ -36,16 +69,10 @@ export function formatThemeFile(theme){
       "input__bg": "fade(#000000, 20%)",
       "input-bg-warn-color": "fade(@orange, 60%)",
       "panel-border": "darken(@app__bg0, 4%)",
-      "section-border": "fade(${themeValues.root.sectionBorder}, 8%)",
-      "subtle-border": "fade(${themeValues.root.subtleBorder}, 4%)",
-      "modal-overlay-color": "${convertToRgba(themeValues.root.modalOverlay, 0.5)}",
-      ".text-color": "${themeValues.root.textColor}",
       "text-selected": "@.text-color",
       "text-normal": "fade(@.text-color, 75%)",
       "text-secondary": "fade(@.text-color, 60%)",
       "text-disabled": "fade(@.text-color, 40%)",
-      "text-accent": "${themeValues.root.textAccent}",
-      "text-inverse": "${themeValues.root.textInverse}",
       "btn-text": "@text-normal",
       "btn-text-hover": "@text-selected",
       "default-border": "@text-normal",
@@ -71,7 +98,6 @@ export function formatThemeFile(theme){
       "droppable": "fade(@yellow, 30%)",
       "drop-target": "fade(@green, 50%)",
       "input--disabled": "fade(#000000, 10%)",
-      "link-color": "${themeValues.root.linkColor}",
       "form-control-focus": "@blue",
       "code-bg": "@app__bg0",
       "scroll-thumb-border": "@app__bg0",
@@ -79,7 +105,6 @@ export function formatThemeFile(theme){
       "scroll-thumb-bg-light": "lighten(@toolbar__bg2, 20%)",
       "wip-status": "fade(@blue, 40%)",
       "card__bg": "@panel__bg2",
-      "card-shadow": "${convertToRgba(themeValues.root.cardShadow, 0.2)}",
       "filtering": "fade(@blue, 50%)",
       "soloing": "fade(@orange, 50%)",
       "checked-out": "fade(@green, 30%)",
@@ -89,33 +114,15 @@ export function formatThemeFile(theme){
       "filter-match": "fade(@blue, 50%)",
       "clone__progress": "fade(@blue, 70%)",
       "toolbar__prompt": "fade(@blue, 20%)",
-      "modified-line": "fade(${themeValues.root.modifiedLine}, 25%)",
       "verified": "fade(@green, 30%)",
-      "unverified": "fade(${themeValues.root.unverified}, 10%)",
-      "drop-sort-border": "@green",
-      "terminal__repo-name-color": "${themeValues.root.termRepoName}",
-      "terminal__repo-branch-color": "${themeValues.root.termRepoBranch}",
-      "terminal__repo-tag-color": "${themeValues.root.termRepoTag}",
-      "terminal__repo-upstream-color": "${themeValues.root.termRepoUpstream}"
+      "drop-sort-border": "@green"
     },
     "toolbar": {
-      "text-selected": "${convertToRgba(toolbar.textSelected, 1)}",
-      "text-normal": "${convertToRgba(toolbar.textNormal, 0.9)}",
-      "text-secondary": "${convertToRgba(toolbar.textSecondary, 0.6)}",
-      "text-disabled": "${convertToRgba(toolbar.textDisabled, 0.4)}",
-      "section-border": "${convertToRgba(toolbar.sectionBorder, 0.2)}",
-      "input__bg": "${convertToRgba(toolbar.input__bg, 0.2)}",
-      "link-color": "${convertToRgba(toolbar.linkColor)}",
+      ${sanitizeValues(toolbar)}
       "btn-text": "var(--text-normal)"
     },
     "tabsbar": {
-      "text-selected": "${convertToRgba(tabsbar.textSelected)}",
-      "text-normal": "${convertToRgba(tabsbar.textNormal, 0.9)}",
-      "text-secondary": "${convertToRgba(tabsbar.textSecondary, 0.6)}",
-      "text-disabled": "${convertToRgba(tabsbar.textDisabled, 0.4)}",
-      "section-border": "${convertToRgba(toolbar.sectionBorder, 0.2)}",
-      "input__bg": "${convertToRgba(tabsbar.input__bg, 0.2)}",
-      "link-color": "${convertToRgba(tabsbar.linkColor)}",
+      ${sanitizeValues(tabsbar)}
       "btn-text": "var(--text-normal)"
     }
   }
